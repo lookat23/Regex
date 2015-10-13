@@ -410,7 +410,7 @@ namespace haojson
             str++;
 
             if(c == L'\"' ) { break; }
-            if(c == L'\\') { c = *(str++); }
+            if(c == L'\\') { c = *(str++); }    // 有\号就取\后面的字符
 
             name.append(1, c);
         }
@@ -456,11 +456,5 @@ namespace haojson
 
 		return ret;
     }
-
-
-
-
-
-
 }
 

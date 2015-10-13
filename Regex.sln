@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Regex", "Regex\Regex.vcxproj", "{98B344FE-FF90-4172-A6C9-92CA5C70CC33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{5BE9F799-70BE-4808-ABF1-59CC6F5681EC}"
+	ProjectSection(SolutionItems) = preProject
+		common\macro.h = common\macro.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json", "json\json.vcxproj", "{5B09867E-27A6-490F-A697-BEB6E58BA9A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98B344FE-FF90-4172-A6C9-92CA5C70CC33}.Debug|Win32.ActiveCfg = Debug|Win32
+		{98B344FE-FF90-4172-A6C9-92CA5C70CC33}.Debug|Win32.Build.0 = Debug|Win32
+		{98B344FE-FF90-4172-A6C9-92CA5C70CC33}.Release|Win32.ActiveCfg = Release|Win32
+		{98B344FE-FF90-4172-A6C9-92CA5C70CC33}.Release|Win32.Build.0 = Release|Win32
+		{5B09867E-27A6-490F-A697-BEB6E58BA9A4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B09867E-27A6-490F-A697-BEB6E58BA9A4}.Debug|Win32.Build.0 = Debug|Win32
+		{5B09867E-27A6-490F-A697-BEB6E58BA9A4}.Release|Win32.ActiveCfg = Release|Win32
+		{5B09867E-27A6-490F-A697-BEB6E58BA9A4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

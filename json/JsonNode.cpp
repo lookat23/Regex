@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "JsonNode.h"
 #include "json.h"
+#include "jsonAux.h"
 /******************************************************************************/
 namespace haojson{
 // AUX

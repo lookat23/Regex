@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "UnitTest.h"
 
-
-
 std::map< std::string, cTestBase* >& GetmapTestObj()
 {
     static std::map< std::string, cTestBase* > mapTestObj;

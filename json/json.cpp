@@ -2,6 +2,8 @@
 #include "json.h"
 #include <string>
 
+#include "jsonAux.h"
+/******************************************************************************/
 namespace haojson
 {
 // function
@@ -38,7 +40,7 @@ namespace haojson
         assert( CharNext(c) == OriginalChar );
     }
 
-    const wchar_t GetCharAndNext(const wchar_t*& c)
+    const wchar_t GetCharAndCharNext(const wchar_t*& c)
     {
         const wchar_t ret = GetChar(c);
         CharNext(c);
@@ -299,11 +301,11 @@ namespace haojson
 			auto subObj = std::make_shared<CObjectSubObj>();
 
             subObj->SetLeft( ParseObjectLeft(str) );
-            assert( GetCharAndNext(str) == L':' );
+            assert( GetCharAndCharNext(str) == L':' );
             subObj->SetRight( ParseObjectRight(str) );
 			ret->push_back(subObj);
             {
-                const wchar_t c = GetCharAndNext(str);
+                const wchar_t c = GetCharAndCharNext(str);
                 if(c == L'}')
                 {
                     break;
@@ -386,7 +388,7 @@ namespace haojson
             auto obj = ParseObjectRight(str);
 			ret->push_back( obj );
 
-            const wchar_t c = GetCharAndNext(str);
+            const wchar_t c = GetCharAndCharNext(str);
             if(c == L']')
             {
                 break;

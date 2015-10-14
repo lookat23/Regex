@@ -3,5 +3,12 @@
 
 namespace haojson
 {
+//----------------------------------------------------------------------------------------------
+// Exception
+    Exception::Exception( const std::wstring& _message )
+        : message(_message)
+    {
+    }
+
 
 }

@@ -56,32 +56,32 @@ namespace haojson
 		{
 		case osObject:
 			{
-				ret.reset(new CObjectObj);
+                ret = std::make_shared<CObjectObj>();
 			}
 			break;
 		case osObjectRight:
 			{
-				ret.reset(new CObjectRight);
+                ret = std::make_shared<CObjectRight>();
 			}
 			break;
 		case osObjectLeft:
 			{
-				ret.reset(new CObjectLeft);
+                ret = std::make_shared<CObjectLeft>();
 			}
 			break;
 		case osArray:
 			{
-				ret.reset(new CObjectArray);
+                ret = std::make_shared<CObjectArray>();
 			}
 			break;
 		case osStr:
 			{
-				ret.reset(new CObjectStr);
+                ret = std::make_shared<CObjectStr>();
 			}
 			break;
 		case osNumber:
 			{
-				ret.reset(new CObjectNumber);
+                ret = std::make_shared<CObjectNumber>();
 			}
 			break;
 		default:
@@ -297,7 +297,7 @@ namespace haojson
 		auto ret = GetObjectObjInstance();
 
         while(true)
-        {
+        {   
 			auto subObj = std::make_shared<CObjectSubObj>();
 
             subObj->SetLeft( ParseObjectLeft(str) );

@@ -21,145 +21,66 @@ private:
 #define WIDEN2(str) L#str
 #define WIDEN(str)  WIDEN2(str)
 
-#define VARI(x)\
-    [&]()->std::wstring {\
-    std::wostringstream ss;\
-    ss << L#x << L" = " << x;\
-    return ss.str();\
-}()\
-
-std::wstring gSS;
-
-void* Fun1(int t)
-{
-    gSS += VARI(t);
-
-    return *Fun1;
-}
-
-#define MACRO2(x)\
-{\
-    gSS += VARI(x);\
-}\
-
-#define MACRO1(x)\
-{\
-    gSS += VARI(x);\
-}MACRO2\
-
-void fun1()
-{
-    int a = 10;
-}
-
-#define M1(x, y)\
-{\
-    x;\
-    int b = 10;\
-    gSS += VARI(y);\
-}
-
-#define M4 2
-
-
-
-
-#define M2(x)\
-    fun1();\
-    M1(M4,x);\
-    
-
-class M33
+class Assert
 {
 public:
-    M33(){
-        int a = 10;
-    };
-    //    template<typename T>
-    //     M33(T t)
-    //     {
-    //         M2(t);
-    //     }
+    Assert(const std::wstring& expr)
+        : SMART_ASSERT_A(*this), SMART_ASSERT_B(*this)
+    {
+        _err = L"Failed: ";
+        _err += expr + L"\n";
+    }
+    ~Assert()
+    {
+        assert(_err.c_str() && false);
+        throw Exception(_err);
+    }
 
+public:
+    Assert& SMART_ASSERT_A;
+    Assert& SMART_ASSERT_B;
+    //whatever member functions
     template<typename T>
-    M33 operator()(T t)
+    Assert& print_current_val(T t,const wchar_t* e)
     {
-        M2(t);
-        return M33(*this);
-    }
-    M33(const M33& )
-    {
-        int a = 10;
-    }
-private:
-    std::wstring message;
-};
+        _err += e;
+        _err += L" = ";
+        std::wstringstream ss;
+        ss << t;
+        _err += ss.str();
+        _err += L"\n";
 
-#define M3(x)\
-    M33()(x)\
-
-class ScopeGuard
-{
-public:
-    ScopeGuard(std::function<void()> callback_fun)
-    {
-        _callback_fun = callback_fun;
+        return *this;
     }
-    ~ScopeGuard()
+    Assert& print_context(const wchar_t* file, const wchar_t* line)
     {
-        _callback_fun();
+        _err += L"file: ";
+        _err += file;
+        _err += L"  ";
+        _err += L"line: ";
+        _err += line;
+        _err += L"\n";
+
+        return *this;
     }
 private:
-    std::function<void()> _callback_fun;
+    void operator=(const Assert&);
+    std::wstring _err;
 };
 
-#define M5(x)\
-{\
-    std::wstring err;\
-    err += L"Failed: " L#x L"\n";\
-    err += L"File: "  WIDEN(__FILE__) L" Line: " WIDEN(__LINE__) L"\n";\
-    ScopeGuard onExit([](){\
-        assert(err.c_str() && false);\
-        throw Exception(err);\
-});\
-}
-
-#define ENSURE(x)\
-    if(!(x))\
-{\
-    std::wstring err;\
-    err += L"Failed: " L#x L"\n";\
-    err += L"File: "  WIDEN(__FILE__) L" Line: " WIDEN(__LINE__);\
-    assert(err.c_str() && false);\
-    throw Exception(err);\
-}
-
-extern void funB();
-void funA()
+Assert make_assert(const std::wstring& expr)
 {
-    funB();
+    return Assert(expr);
 }
 
-void funB()
-{
-    int t1 = 10;
-    int t2 = 20;
-    throw Exception();
+#define SMART_ASSERT_A(x) SMART_ASSERT_OP(x,B)
+#define SMART_ASSERT_B(x) SMART_ASSERT_OP(x,A)
+#define SMART_ASSERT_OP(x,next) \
+SMART_ASSERT_A.print_current_val((x),L#x).SMART_ASSERT_##next
 
-}
-
-void funC()
-{
-    try
-    {
-        funA();
-    }
-    catch (Exception& e)
-    {
-        int a = 10;
-    }
-
-}
+#define SMART_ASSERT(expr) \
+if( (expr) ) ; \
+else make_assert(L#expr).print_context(WIDEN(__FILE__),WIDEN(__LINE__)).SMART_ASSERT_A
 
 TEST_CASE(testException)
 {
@@ -177,16 +98,11 @@ TEST_CASE(testException)
         int c2 = 2;
         int c3 = 3;
 
-        //M1(M1(M1(NULL, c1), c2),c3);
-        //M1(c1)(c2)(c3);
-        {
-            //M3()(c1)(c2);
-        }
-        M3(c1)(c2)(c3);
+        SMART_ASSERT(1==2)(c1)(c2)(c3);
 
-        int a = 10;
-        MACRO1(c1)(c2)(c3);
-        ENSURE(1 == 2);
+//         int a = 10;
+//         MACRO1(c1)(c2)(c3);
+//         ENSURE(1 == 2);
     }
     catch(Exception& e)
     {
